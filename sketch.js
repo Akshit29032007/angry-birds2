@@ -75,3 +75,27 @@ function mouseDragged(){
 function mouseReleased(){
     slingshot.fly();
 }
+
+function keyPressed() {
+    // ASCII CODE 
+    if(keyCode===32){ // if key pressed is spacebar
+        slingshot.attach(bird.body);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
