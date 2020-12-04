@@ -1,12 +1,54 @@
+                                                                                    
+// Revise the different ways of storing data  
+
+/*var string = "Hi hello";
+console.log(string);
+
+var number = 1234578;
+console.log(number);
+
+var boolean = true;
+console.log(boolean);
+
+var object;
+
+console.log(object);
+
+object = null;
+console.log(object);
+
+// Arrays
+var array1 = [1,2,3,4,5,6,7,8];
+console.log("Array1 - " + array1);
+
+var array2 = ["Ani", "Lin",1234,"#$%^"];
+console.log("Array2 - " + array2);
+
+console.log(array1[0]);
+console.log(array1.length);
+
+array1.push(9);
+array1.pop();
+console.log(array1);
+
+var array3 = [[1,2],[2,3],[3,4]]; // array3[1]--> [2,3]  array3[2][1] --->
+
+
+console.log(array3); 
+console.log(array3.length);
+*/
+
 const Engine = Matter.Engine;
 const World= Matter.World;
 const Bodies = Matter.Bodies;
 const Constraint = Matter.Constraint;
 
 var engine, world;
-var box1, pig1;
+var box1, pig1,pig3;
 var backgroundImg,platform;
-var bird, slingShot;
+var bird, slingshot;
+// onSling & Launched
+var gameState = "onSling";
 
 function preload() {
     backgroundImg = loadImage("sprites/bg.png");
@@ -36,7 +78,7 @@ function setup(){
     log4 = new Log(760,120,150, PI/7);
     log5 = new Log(870,120,150, -PI/7);
 
-    bird = new Bird(100,50);
+    bird = new Bird(200,50);
 
     //log6 = new Log(230,180,80, PI/2);
     slingshot = new SlingShot(bird.body,{x:200, y:50});
@@ -45,7 +87,7 @@ function setup(){
 function draw(){
     background(backgroundImg);
     Engine.update(engine);
-    strokeWeight(4);
+    //strokeWeight(4);
     box1.display();
     box2.display();
     ground.display();
@@ -62,40 +104,28 @@ function draw(){
     log5.display();
 
     bird.display();
+    
     platform.display();
     //log6.display();
     slingshot.display();    
 }
 
+
 function mouseDragged(){
-    Matter.Body.setPosition(bird.body, {x: mouseX , y: mouseY});
+    if(gameState !== "launched") {
+        Matter.Body.setPosition(bird.body, {x: mouseX , y: mouseY});
+    }
+    
 }
 
 
 function mouseReleased(){
-    slingshot.fly();
+     slingshot.fly();
+     gameState="launched";
 }
 
-function keyPressed() {
-    // ASCII CODE 
-    if(keyCode===32){ // if key pressed is spacebar
-        slingshot.attach(bird.body);
+function keyPressed(){
+    if(keyCode === 32){
+        //slingshot.attach(bird.body);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
