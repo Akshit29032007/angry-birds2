@@ -1,43 +1,3 @@
-                                                                                    
-// Revise the different ways of storing data  
-
-/*var string = "Hi hello";
-console.log(string);
-
-var number = 1234578;
-console.log(number);
-
-var boolean = true;
-console.log(boolean);
-
-var object;
-
-console.log(object);
-
-object = null;
-console.log(object);
-
-// Arrays
-var array1 = [1,2,3,4,5,6,7,8];
-console.log("Array1 - " + array1);
-
-var array2 = ["Ani", "Lin",1234,"#$%^"];
-console.log("Array2 - " + array2);
-
-console.log(array1[0]);
-console.log(array1.length);
-
-array1.push(9);
-array1.pop();
-console.log(array1);
-
-var array3 = [[1,2],[2,3],[3,4]]; // array3[1]--> [2,3]  array3[2][1] --->
-
-
-console.log(array3); 
-console.log(array3.length);
-*/
-
 const Engine = Matter.Engine;
 const World= Matter.World;
 const Bodies = Matter.Bodies;
@@ -47,11 +7,15 @@ var engine, world;
 var box1, pig1,pig3;
 var backgroundImg,platform;
 var bird, slingshot;
-// onSling & Launched
+
 var gameState = "onSling";
+var score=0;
+var bkimage = "sprites/bg.png";
 
 function preload() {
-    backgroundImg = loadImage("sprites/bg.png");
+
+    getBackgroundImage();
+    
 }
 
 function setup(){
@@ -85,18 +49,28 @@ function setup(){
 }
 
 function draw(){
-    background(backgroundImg);
+    if(backgroundImg){
+        background(backgroundImg);
+
+    }
+
+    noStroke();
+    fill("white");
+    textSize(35);
+    text("Score : " + score,width-300,50);
     Engine.update(engine);
     //strokeWeight(4);
     box1.display();
     box2.display();
     ground.display();
     pig1.display();
+    pig1.score();
     log1.display();
 
     box3.display();
     box4.display();
     pig3.display();
+    pig3.score();
     log3.display();
 
     box5.display();
@@ -104,28 +78,49 @@ function draw(){
     log5.display();
 
     bird.display();
-    
     platform.display();
     //log6.display();
     slingshot.display();    
 }
 
-
 function mouseDragged(){
-    if(gameState !== "launched") {
+    if (gameState!=="launched"){
         Matter.Body.setPosition(bird.body, {x: mouseX , y: mouseY});
     }
-    
 }
 
 
 function mouseReleased(){
-     slingshot.fly();
-     gameState="launched";
+    slingshot.fly();
+    gameState = "launched";
 }
 
 function keyPressed(){
     if(keyCode === 32){
-        //slingshot.attach(bird.body);
+       // slingshot.attach(bird.body);
     }
+}
+
+
+async function getBackgroundImage(){
+    var response = await fetch("https://worldtimeapi.org/api/timezone/Asia/Kolkata");
+    // JSON - javascript Object notation
+    var responseJSON = await response.json();
+    var dateTime = responseJSON.datetime;
+
+    var hour = dateTime.slice(11,13);
+
+    if(hour>=06&&hour<=18){
+        bkimage = "sprites/bg.png";
+    }
+    else {
+        bkimage="sprites/bg2.jpg";
+
+    }
+    backgroundImg = loadImage(bkimage);
+    
+
+    // 2020-07-0716:50:08
+    console.log(dateTime);
+    console.log(response);
 }
